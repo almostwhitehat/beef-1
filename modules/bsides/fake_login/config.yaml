@@ -1,0 +1,10 @@
+beef:
+    module:
+        fake_login:
+            enable: true
+            category: ["Bsides 2017"]
+            name: "Fake Login Page"
+            description: "Sends a fake login page."
+            authors: ["Matt Metzger"]
+            target:
+                user_notify: ["All"]
