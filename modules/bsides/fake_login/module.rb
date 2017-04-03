@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Fake_login < BeEF::Core::Command
   # set and return all options for this module
   def self.options
@@ -8,7 +6,7 @@ class Fake_login < BeEF::Core::Command
       'description' => 'Login Notice',
       'type' => 'textarea',
       'ui_label' => 'Notice Text',
-      'value' => 'You have been logged out.',
+      'value' => 'Your session has expired. Please log back in.',
       'width' => '400px'
     }]
   end
