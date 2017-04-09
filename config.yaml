@@ -26,14 +26,14 @@ beef:
     http:
         debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"
-        port: "3000"
+        port: "8000"
 
         # Decrease this setting to 1,000 (ms) if you want more responsiveness
         #  when sending modules and retrieving results.
         # NOTE: A poll timeout of less than 5,000 (ms) might impact performance
         #  when hooking lots of browsers (50+).
         # Enabling WebSockets is generally better (beef.websocket.enable)
-        xhr_poll_timeout: 1000
+        xhr_poll_timeout: 5000
 
         # Host Name / Domain Name
         # If you want BeEF to be accessible via hostname or domain name (ie, DynDNS),
@@ -62,11 +62,11 @@ beef:
 
         # Prefer WebSockets over XHR-polling when possible.
         websocket:
-            enable: false
+            enable: true
             port: 61985 # WS: good success rate through proxies
             # Use encrypted 'WebSocketSecure'
             # NOTE: works only on HTTPS domains and with HTTPS support enabled in BeEF
-            secure: true
+            secure: false
             secure_port: 61986 # WSSecure
             ws_poll_timeout: 1000 # poll BeEF every second
             ws_connect_timeout: 500 # useful to help fingerprinting finish before establishing the WS channel
@@ -75,8 +75,8 @@ beef:
         web_server_imitation:
             enable: true
             type: "apache" # Supported: apache, iis, nginx
-            hook_404: false # inject BeEF hook in HTTP 404 responses
-            hook_root: false # inject BeEF hook in the server home page
+            hook_404: true # inject BeEF hook in HTTP 404 responses
+            hook_root: true # inject BeEF hook in the server home page
         # Experimental HTTPS support for the hook / admin / all other Thin managed web services
         https:
             enable: false
