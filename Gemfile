@@ -6,6 +6,8 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
+gem 'pry'
+gem 'pry-remote'
 gem 'eventmachine'
 gem 'thin'
 gem 'sinatra'
