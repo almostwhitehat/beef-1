@@ -157,6 +157,7 @@ module BeEF
                 end
               rescue => e
                 print_error "API Fire Error: #{e.message} in #{mod.to_s}.#{method.to_s}()"
+                print_error e.backtrace
               end
             end
           else

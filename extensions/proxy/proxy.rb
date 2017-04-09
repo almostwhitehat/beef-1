@@ -116,14 +116,14 @@ module BeEF
           # Saves the new HTTP request to the db. It will be processed by the PreHookCallback of the requester component.
           # IDs are created and incremented automatically by DataMapper.
           http = H.new(
-              :request => raw_request,
-              :method => method,
-              :domain => uri.host,
-              :port => uri.port,
-              :path => uri.path,
-              :request_date => Time.now,
-              :hooked_browser_id => self.get_tunneling_proxy,
-              :allow_cross_domain => "true"
+            :request => raw_request,
+            :method => method,
+            :domain => uri.host,
+            :port => uri.port,
+            :path => uri.path,
+            :request_date => Time.now,
+            :hooked_browser_id => self.get_tunneling_proxy,
+            :allow_cross_domain => "true"
           )
           http.save
           print_debug("[PROXY] --> Forwarding request ##{http.id}: domain[#{http.domain}:#{http.port}], method[#{http.method}], path[#{http.path}], cross domain[#{http.allow_cross_domain}]")
@@ -146,6 +146,8 @@ module BeEF
           # Some of the original response headers need to be removed, like encoding and cache related: for example
           # about encoding, the original response headers says that the content-length is 1000 as the response is gzipped,
           # but the final content-length forwarded back by the proxy is clearly bigger. Date header follows the same way.
+          #puts "response_status: #{response_status}"
+          #puts "resonse_body: #{response_body}"
           response_headers = ""
           if (response_status != -1 && response_status != 0)
             ignore_headers = [
@@ -157,7 +159,11 @@ module BeEF
               "Connection",
               "Expires",
               "Accept-Ranges",
-              "Date"]
+              "Date",
+              "Content-Length",
+              "ETag",
+              "Transfer-Encoding"
+            ]
             headers.each_line do |line|
               # stripping the Encoding, Cache and other headers
               header_key = line.split(': ')[0]
@@ -167,17 +173,21 @@ module BeEF
               if header_value.nil?
                 #headers_hash[header_key] = ""
               else
-                # update Content-Length with the valid one
-                if header_key == "Content-Length"
-                  response_headers += "Content-Length: #{response_body.size}\r\n"
-                else
-                  response_headers += line
-                end
+                response_headers += line
               end
             end
           end
 
-          res = "#{version} #{response_status}\r\n#{response_headers}\r\n\r\n#{response_body}"
+          puts '-' * 20
+          puts "URL: #{url}\n"
+          puts "RESPONSE: #{response_status}\n"
+
+          puts "HEADERS: #{response_headers}"
+          puts '-' * 20
+          content_length = response_body.size
+
+          response_headers += "Content-Length: #{response_body.size}\r\n"
+          res = "#{version} #{response_status}\r\n#{response_headers}\r\n#{response_body}"
           socket.write(res)
           socket.close
         end
