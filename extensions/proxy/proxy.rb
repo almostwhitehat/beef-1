@@ -83,6 +83,8 @@ module BeEF
 
           # url # host:port/path
           url = url_prefix + request_line[/^\w+\s+(\S+)/, 1]
+          puts '-' * 20
+          puts "URL: #{url}\n"
 
           # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
           # anti: somehow the config below was removed, have a look into this
@@ -130,10 +132,12 @@ module BeEF
 
           # Wait for the HTTP response to be stored in the db.
           # TODO: re-implement this with EventMachine or with the Observer pattern.
+          puts 'Waiting for respose'
           while H.first(:id => http.id).has_ran != "complete"
             sleep 0.5
           end
           @response = H.first(:id => http.id)
+          puts 'Received response'
           print_debug "[PROXY] <-- Response for request ##{@response.id} to [#{@response.path}] on domain [#{@response.domain}:#{@response.port}] correctly processed"
 
           response_body = @response['response_data']
@@ -178,8 +182,6 @@ module BeEF
             end
           end
 
-          puts '-' * 20
-          puts "URL: #{url}\n"
           puts "RESPONSE: #{response_status}\n"
 
           puts "HEADERS: #{response_headers}"
