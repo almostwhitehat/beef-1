@@ -6,7 +6,7 @@ class Fake_choose_mfa < BeEF::Core::Command
       'description' => 'MFA Options',
       'type' => 'textarea',
       'ui_label' => 'MFA Options',
-      'value' => "Work Cell\r\nPersonal Cell",
+      'value' => "Work Cell\nPersonal Cell",
       'width' => '400px'
     }]
   end
