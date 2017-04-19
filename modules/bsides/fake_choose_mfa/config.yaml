@@ -1,0 +1,10 @@
+beef:
+    module:
+        fake_choose_mfa:
+            enable: true
+            category: ["Bsides 2017"]
+            name: "Fake MFA Page"
+            description: "Sends a fake MFA page."
+            authors: ["Matt Metzger"]
+            target:
+                user_notify: ["All"]
